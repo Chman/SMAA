@@ -89,6 +89,8 @@ namespace Smaa
 		/// 
 		/// This allows to eliminate spurious crossing edges, and is based on the fact that, if there is too much
 		/// contrast in a direction, that will hide perceptually contrast in the other neighbors.
+		/// 
+		/// Currently unused in OpenGL.
 		/// </summary>
 		[Min(0f)]
 		public float LocalContrastAdaptationFactor = 2f;

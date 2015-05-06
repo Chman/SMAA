@@ -81,6 +81,11 @@ namespace SmaaEditor
 			EditorGUILayout.PropertyField(m_DetectionMethod, new GUIContent("Edge Detection Method", "You've three edge detection methods to choose from: luma, color or depth.\nThey represent different quality/performance and anti-aliasing/sharpness tradeoffs, so our recommendation is for you to choose the one that best suits your particular scenario:\n\n- Depth edge detection is usually the fastest but it may miss some edges.\n- Luma edge detection is usually more expensive than depth edge detection, but catches visible edges that depth edge detection can miss.\n- Color edge detection is usually the most expensive one but catches chroma-only edges."));
 			EditorGUILayout.PropertyField(m_Quality, new GUIContent("Quality Preset", "Low: 60% of the quality.\nMedium: 80% of the quality.\nHigh: 95% of the quality.\nUltra: 99% of the quality."));
 
+			if ((m_DetectionMethod.enumValueIndex == (int)EdgeDetectionMethod.Depth - 1) && IsOpenGL())
+			{
+				EditorGUILayout.HelpBox("EdgeDetectionMethod.Depth isn't supported on OpenGL. Please use Luma or Color instead.", MessageType.Warning);
+			}
+
 			if (m_Quality.enumValueIndex == (int)QualityPreset.Custom)
 			{
 				EditorGUILayout.Space();
@@ -103,7 +108,9 @@ namespace SmaaEditor
 				if (m_CustomCornerDetection.boolValue)
 					EditorGUILayout.PropertyField(m_CustomCornerRounding, new GUIContent("Corner Rounding", "Specifies how much sharp corners will be rounded."));
 
-				EditorGUILayout.PropertyField(m_CustomLocalContrastAdaptationFactor, new GUIContent("Local Contrast Adaptation Factor", "If there is an neighbor edge that has a local contrast factor times bigger contrast than current edge, current edge will be discarded.\nThis allows to eliminate spurious crossing edges, and is based on the fact that, if there is too much contrast in a direction, that will hide perceptually contrast in the other neighbors."));
+				if (m_DetectionMethod.enumValueIndex != (int)EdgeDetectionMethod.Depth - 1)
+					EditorGUILayout.PropertyField(m_CustomLocalContrastAdaptationFactor, new GUIContent("Local Contrast Adaptation Factor", "If there is an neighbor edge that has a local contrast factor times bigger contrast than current edge, current edge will be discarded.\nThis allows to eliminate spurious crossing edges, and is based on the fact that, if there is too much contrast in a direction, that will hide perceptually contrast in the other neighbors."));
+
 				EditorGUI.indentLevel--;
 			}
 
@@ -125,6 +132,11 @@ namespace SmaaEditor
 			}
 
 			serializedObject.ApplyModifiedProperties();
+		}
+
+		bool IsOpenGL()
+		{
+			return SystemInfo.graphicsDeviceVersion.IndexOf("OpenGL") > -1;
 		}
 	}
 }

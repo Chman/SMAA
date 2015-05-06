@@ -736,7 +736,9 @@ float2 SMAALumaEdgeDetectionPS(float2 texcoord,
     float finalDelta = max(maxDelta.x, maxDelta.y);
 
     // Local contrast adaptation:
-    edges.xy *= step(finalDelta, SMAA_LOCAL_CONTRAST_ADAPTATION_FACTOR * delta.xy);
+#if !defined(SHADER_API_OPENGL)
+   edges.xy *= step(finalDelta, SMAA_LOCAL_CONTRAST_ADAPTATION_FACTOR * delta.xy);
+#endif
 
     return edges;
 }
@@ -806,7 +808,9 @@ float2 SMAAColorEdgeDetectionPS(float2 texcoord,
     float finalDelta = max(maxDelta.x, maxDelta.y);
 
     // Local contrast adaptation:
+#if !defined(SHADER_API_OPENGL)
     edges.xy *= step(finalDelta, SMAA_LOCAL_CONTRAST_ADAPTATION_FACTOR * delta.xy);
+#endif
 
     return edges;
 }

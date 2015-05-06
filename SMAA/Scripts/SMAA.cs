@@ -339,8 +339,6 @@ namespace Smaa
 
 		void Clear(RenderTexture rt)
 		{
-			//Graphics.SetRenderTarget(rt);
-			//GL.Clear(true, true, Color.clear);
 			Graphics.Blit(rt, rt, Material, 0);
 		}
 

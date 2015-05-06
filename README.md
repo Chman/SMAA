@@ -2,7 +2,7 @@
 
 This is a highly customizable implementation of [Subpixel Morphological Antialiasing](http://www.iryoku.com/smaa/) for Unity3D.
 
-Tested with Unity 5+ (Personal or Pro). Works with the deferred & forward rendering paths, in gamma or linear color space. Works with Directx 9 and Directx 11 targets, but it doesn't fully works with OpenGL at the moment (the edge detection pass is a bit broken).
+Tested with Unity 5+ (Personal or Pro). Works with the deferred & forward rendering paths, in gamma or linear color space, with Directx 9, Directx 11 and OpenGL targets.
 
 It comes with a few quality presets but you can easily build your own in the inspector. Every inspector setting comes with a help popup so you shouldn't have to dig into the (documented) source code.
 

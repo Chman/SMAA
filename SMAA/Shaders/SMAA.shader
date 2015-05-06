@@ -71,7 +71,7 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 		#define SMAASamplePoint(tex, coord) tex2D(tex, coord)
 		#define SMAASampleOffset(tex, coord, offset) tex2D(tex, coord + offset * SMAA_RT_METRICS.xy)
 
-		#if defined(SHADER_API_D3D9) || defined(SHADER_API_XBOX360) || defined(SHADER_API_PS3) || defined(SHADER_API_D3D11)
+		#if !defined(SHADER_API_OPENGL)
 		#define SMAA_FLATTEN [flatten]
 		#define SMAA_BRANCH [branch]
 		#else
