@@ -8,6 +8,8 @@ It comes with a few quality presets but you can easily build your own in the ins
 
 Right now it implements SMAA 1x (+ predication). Implementing Temporal SMAA (T2x) should be doable, but the spatial (S2x) and spatial + temporal (4x) variants aren't possible in Unity right now.
 
+[Comparison screenshots with FXAA and Supersampling](http://imgur.com/a/J75KB).
+
 ## Instructions
 
 Drop the `SMAA` folder in your project and add the `SMAA` script to your camera (or select your camera and use `Component -> Image Effects -> Subpixel Morphological Antialiasing`).
