@@ -234,7 +234,13 @@ namespace Smaa
 		{
 			// Cleanup
 			if (m_Material != null)
+			{
+				#if UNITY_EDITOR
 				DestroyImmediate(m_Material);
+				#else
+				Destroy(m_Material);
+				#endif
+			}
 		}
 
 		void OnRenderImage(RenderTexture source, RenderTexture destination)
