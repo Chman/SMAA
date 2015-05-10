@@ -58,22 +58,22 @@ namespace Smaa
 		/// <summary>
 		/// 60% of the quality.
 		/// </summary>
-		Low,
+		Low = 0,
 
 		/// <summary>
 		/// 80% of the quality.
 		/// </summary>
-		Medium,
+		Medium = 1,
 
 		/// <summary>
 		/// 90% of the quality.
 		/// </summary>
-		High,
+		High = 2,
 
 		/// <summary>
 		/// 99% of the quality (generally overkill).
 		/// </summary>
-		Ultra,
+		Ultra = 3,
 
 		/// <summary>
 		/// Custom quality settings.
@@ -174,24 +174,9 @@ namespace Smaa
 		protected Camera m_Camera;
 
 		/// <summary>
-		/// The internal <see cref="Preset"/> used for <see cref="QualityPreset.Low"/>.
+		/// The internal <see cref="Preset"/> used for <c>Low</c>, <c>Medium</c>, <c>High</c>, <c>Ultra</c>.
 		/// </summary>
-		protected Preset m_LowPreset;
-
-		/// <summary>
-		/// The internal <see cref="Preset"/> used for <see cref="QualityPreset.Medium"/>.
-		/// </summary>
-		protected Preset m_MediumPreset;
-
-		/// <summary>
-		/// The internal <see cref="Preset"/> used for <see cref="QualityPreset.High"/>.
-		/// </summary>
-		protected Preset m_HighPreset;
-
-		/// <summary>
-		/// The internal <see cref="Preset"/> used for <see cref="QualityPreset.Ultra"/>.
-		/// </summary>
-		protected Preset m_UltraPreset;
+		protected Preset[] m_StdPresets;
 
 		/// <summary>
 		/// The internal <c>Material</c> instance. Use <see cref="Material"/> instead.
@@ -226,6 +211,9 @@ namespace Smaa
 
 			// Misc
 			m_Camera = GetComponent<Camera>();
+
+			// Create default presets
+			CreatePresets();
 		}
 
 		void Start()
@@ -240,9 +228,6 @@ namespace Smaa
 			// Disable the image effect if the shader can't run on the user's graphics card
 			if (!Shader || !Shader.isSupported)
 				enabled = false;
-
-			// Create default presets
-			CreatePresets();
 		}
 
 		void OnDisable()
@@ -257,11 +242,9 @@ namespace Smaa
 			int width = m_Camera.pixelWidth;
 			int height = m_Camera.pixelHeight;
 			Preset preset = CustomPreset;
-			
-			if (Quality == QualityPreset.Low) preset = m_LowPreset;
-			else if (Quality == QualityPreset.Medium) preset = m_MediumPreset;
-			else if (Quality == QualityPreset.High) preset = m_HighPreset;
-			else if (Quality == QualityPreset.Ultra) preset = m_UltraPreset;
+
+			if (Quality != QualityPreset.Custom)
+				preset = m_StdPresets[(int)Quality];
 
 			// Pass IDs
 			int passEdgeDetection = (int)DetectionMethod;
@@ -353,23 +336,28 @@ namespace Smaa
 
 		void CreatePresets()
 		{
-			m_LowPreset = new Preset
+			m_StdPresets = new Preset[4];
+
+			// Low
+			m_StdPresets[0] = new Preset
 			{
 				Threshold = 0.15f,
 				MaxSearchSteps = 4
 			};
-			m_LowPreset.DiagDetection = false; // Can't use object initializer for bool (weird mono bug ?)
-			m_LowPreset.CornerDetection = false;
+			m_StdPresets[0].DiagDetection = false; // Can't use object initializer for bool (weird mono bug ?)
+			m_StdPresets[0].CornerDetection = false;
 
-			m_MediumPreset = new Preset
+			// Medium
+			m_StdPresets[1] = new Preset
 			{
 				Threshold = 0.1f,
 				MaxSearchSteps = 8
 			};
-			m_MediumPreset.DiagDetection = false;
-			m_MediumPreset.CornerDetection = false;
+			m_StdPresets[1].DiagDetection = false;
+			m_StdPresets[1].CornerDetection = false;
 
-			m_HighPreset = new Preset
+			// High
+			m_StdPresets[2] = new Preset
 			{
 				Threshold = 0.1f,
 				MaxSearchSteps = 16,
@@ -377,7 +365,8 @@ namespace Smaa
 				CornerRounding = 25
 			};
 
-			m_UltraPreset = new Preset
+			// Ultra
+			m_StdPresets[3] = new Preset
 			{
 				Threshold = 0.05f,
 				MaxSearchSteps = 32,
