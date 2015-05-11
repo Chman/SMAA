@@ -12,7 +12,7 @@ Right now it implements SMAA 1x (+ predication). Implementing Temporal SMAA (T2x
 
 ## Instructions
 
-Drop the `SMAA` folder in your project and add the `SMAA` script to your camera (or select your camera and use `Component -> Image Effects -> Subpixel Morphological Antialiasing`).
+Drop the `SMAA` folder in your project and add the `SMAA` script to your camera (or select your camera and use `Component -> Image Effects -> Subpixel Morphological Antialiasing`). The effect should be the first in the post-processing chain (before `Bloom`, `Tonemapping`, `SSAO` etc) or it will miss some edges.
 
 Pull requests are welcomed !
 
