@@ -30,6 +30,7 @@ namespace SmaaEditor
 	[CustomEditor(typeof(SMAA))]
 	public class SMAAEditor : Editor
 	{
+		SerializedProperty m_Hdr;
 		SerializedProperty m_DebugPass;
 		SerializedProperty m_DetectionMethod;
 		SerializedProperty m_Quality;
@@ -52,6 +53,7 @@ namespace SmaaEditor
 
 		void OnEnable()
 		{
+			m_Hdr = serializedObject.FindProperty("Hdr");
 			m_DebugPass = serializedObject.FindProperty("DebugPass");
 			m_DetectionMethod = serializedObject.FindProperty("DetectionMethod");
 			m_Quality = serializedObject.FindProperty("Quality");
@@ -77,6 +79,7 @@ namespace SmaaEditor
 		{
 			serializedObject.Update();
 
+			EditorGUILayout.PropertyField(m_Hdr, new GUIContent("HDR", "Render target mode. Keep it to Auto unless you know what you're doing."));
 			EditorGUILayout.PropertyField(m_DebugPass, new GUIContent("Debug Pass", "Use this to fine tune your settings when working in Custom quality mode."));
 			EditorGUILayout.PropertyField(m_DetectionMethod, new GUIContent("Edge Detection Method", "You've three edge detection methods to choose from: luma, color or depth.\nThey represent different quality/performance and anti-aliasing/sharpness tradeoffs, so our recommendation is for you to choose the one that best suits your particular scenario:\n\n- Depth edge detection is usually the fastest but it may miss some edges.\n- Luma edge detection is usually more expensive than depth edge detection, but catches visible edges that depth edge detection can miss.\n- Color edge detection is usually the most expensive one but catches chroma-only edges."));
 			EditorGUILayout.PropertyField(m_Quality, new GUIContent("Quality Preset", "Low: 60% of the quality.\nMedium: 80% of the quality.\nHigh: 95% of the quality.\nUltra: 99% of the quality."));

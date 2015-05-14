@@ -35,6 +35,11 @@ namespace Smaa
 	public class SMAA : MonoBehaviour
 	{
 		/// <summary>
+		/// Render target mode. Keep it to <see cref="HDRMode.Auto"/> unless you know what you're doing.
+		/// </summary>
+		public HDRMode Hdr = HDRMode.Auto;
+
+		/// <summary>
 		/// Use this to fine tune your settings when working in Custom quality mode.
 		/// </summary>
 		/// <seealso cref="DebugPass"/>
@@ -179,6 +184,14 @@ namespace Smaa
 			int passBlendWeights = 4;
 			int passNeighborhoodBlending = 5;
 
+			// Render format
+			RenderTextureFormat renderFormat = source.format;
+
+			if (Hdr == HDRMode.Off)
+				renderFormat = RenderTextureFormat.ARGB32;
+			else if (Hdr == HDRMode.On)
+				renderFormat = RenderTextureFormat.ARGBHalf;
+
 			// Uniforms
 			Material.SetTexture("_AreaTex", AreaTex);
 			Material.SetTexture("_SearchTex", SearchTex);
@@ -213,8 +226,8 @@ namespace Smaa
 				Shader.EnableKeyword("USE_CORNER_DETECTION");
 
 			// Temporary render textures
-			RenderTexture rt1 = TempRT(width, height);
-			RenderTexture rt2 = TempRT(width, height);
+			RenderTexture rt1 = TempRT(width, height, renderFormat);
+			RenderTexture rt2 = TempRT(width, height, renderFormat);
 
 			// Clear both temp RTs as they could (and will) be filled with garbage
 			Clear(rt1);
@@ -253,13 +266,13 @@ namespace Smaa
 			Graphics.Blit(rt, rt, Material, 0);
 		}
 
-		RenderTexture TempRT(int width, int height)
+		RenderTexture TempRT(int width, int height, RenderTextureFormat format)
 		{
 			// Skip the depth & stencil buffer creation when DebugPass is set to avoid flickering
 			// TODO: Stencil buffer not working for some reason
 			// int depthStencilBits = DebugPass == DebugPass.Off ? 24 : 0;
 			int depthStencilBits = 0;
-			return RenderTexture.GetTemporary(width, height, depthStencilBits, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+			return RenderTexture.GetTemporary(width, height, depthStencilBits, format, RenderTextureReadWrite.Linear);
 		}
 
 		void CreatePresets()
