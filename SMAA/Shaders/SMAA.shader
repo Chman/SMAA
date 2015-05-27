@@ -33,7 +33,7 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 		#pragma fragmentoption ARB_precision_hint_fastest 
 		#pragma target 3.0
 		#pragma glsl
-		#pragma exclude_renderers flash metal gles gles3
+		#pragma exclude_renderers flash
 		
 		sampler2D _MainTex;
 		sampler2D _SourceTex;
