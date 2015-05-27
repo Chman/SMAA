@@ -71,13 +71,8 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 		#define SMAASamplePoint(tex, coord) tex2D(tex, coord)
 		#define SMAASampleOffset(tex, coord, offset) tex2D(tex, coord + offset * SMAA_RT_METRICS.xy)
 
-		#if !defined(SHADER_API_OPENGL)
-		#define SMAA_FLATTEN [flatten]
-		#define SMAA_BRANCH [branch]
-		#else
-		#define SMAA_FLATTEN 
-		#define SMAA_BRANCH 
-		#endif
+		#define SMAA_FLATTEN UNITY_FLATTEN
+		#define SMAA_BRANCH UNITY_BRANCH
 		// SMAA_CUSTOM_SL
 
 		#define SMAA_AREATEX_SELECT(sample) sample.rg
