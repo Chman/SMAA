@@ -195,7 +195,6 @@ namespace Smaa
 			// Uniforms
 			Material.SetTexture("_AreaTex", AreaTex);
 			Material.SetTexture("_SearchTex", SearchTex);
-			Material.SetTexture("_SourceTex", source);
 
 			Material.SetVector("_Metrics", new Vector4(1f / (float)width, 1f / (float)height, width, height));
 			Material.SetVector("_Params1", new Vector4(preset.Threshold, preset.DepthThreshold, preset.MaxSearchSteps, preset.MaxSearchStepsDiag));
@@ -252,7 +251,8 @@ namespace Smaa
 				else
 				{
 					// Neighborhood Blending
-					Graphics.Blit(rt2, destination, Material, passNeighborhoodBlending);
+					Material.SetTexture("_BlendTex", rt2);
+					Graphics.Blit(source, destination, Material, passNeighborhoodBlending);
 				}
 			}
 

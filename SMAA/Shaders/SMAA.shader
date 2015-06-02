@@ -36,11 +36,13 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 		#pragma exclude_renderers flash
 		
 		sampler2D _MainTex;
-		sampler2D _SourceTex;
+		sampler2D _BlendTex;
 		sampler2D _AreaTex;
 		sampler2D _SearchTex;
 
 		sampler2D _CameraDepthTexture;
+		
+		float4 _MainTex_TexelSize;
 
 		float4 _Metrics; // 1f / width, 1f / height, width, height
 		float4 _Params1; // SMAA_THRESHOLD, SMAA_DEPTH_THRESHOLD, SMAA_MAX_SEARCH_STEPS, SMAA_MAX_SEARCH_STEPS_DIAG
@@ -97,6 +99,12 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 			fInput_edge o;
 			o.pos = mul(UNITY_MATRIX_MVP, i.pos);
 			o.uv = i.uv;
+
+			#if UNITY_UV_STARTS_AT_TOP
+			if (_MainTex_TexelSize.y < 0)
+				o.uv.y = 1.0 - o.uv.y;
+			#endif
+
 			o.offset[0] = mad(SMAA_RT_METRICS.xyxy, float4(-1.0, 0.0, 0.0, -1.0), o.uv.xyxy);
 			o.offset[1] = mad(SMAA_RT_METRICS.xyxy, float4( 1.0, 0.0, 0.0,  1.0), o.uv.xyxy);
 			o.offset[2] = mad(SMAA_RT_METRICS.xyxy, float4(-2.0, 0.0, 0.0, -2.0), o.uv.xyxy);
@@ -333,7 +341,7 @@ Shader "Hidden/Subpixel Morphological Antialiasing"
 
 				float4 frag(fInput i) : COLOR
 				{
-					return SMAANeighborhoodBlendingPS(i.uv, i.offset, _SourceTex, _MainTex);
+					return SMAANeighborhoodBlendingPS(i.uv, i.offset, _MainTex, _BlendTex);
 				}
 
 			ENDCG
