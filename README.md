@@ -12,9 +12,11 @@ Right now it implements SMAA 1x (+ predication). Implementing Temporal SMAA (T2x
 
 ## Instructions
 
-Drop the `SMAA` folder in your project and add the `SMAA` script to your camera (or select your camera and use `Component -> Image Effects -> Subpixel Morphological Antialiasing`). The effect should be the first in the post-processing chain (before `Bloom`, `Tonemapping`, `SSAO` etc) or it will miss some edges.
+Drop the `SMAA` folder in your project and add the `SMAA` script to your camera (or select your camera and use `Component -> Image Effects -> Subpixel Morphological Antialiasing`). The effect should be the first in the post-processing chain (before `Bloom`, `Tonemapping`, `DoF` etc) or it will miss some edges, especially when working in HDR.
 
-Pull requests are welcomed !
+## To infinity and beyond
+
+An updated version of this effect is available in Unity's official [Cinematic Image Effects](https://bitbucket.org/Unity-Technologies/cinematic-image-effects) repository (Unity 5.3+ only).
 
 ## License
 
